@@ -35,7 +35,7 @@ public class BeerController {
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
-	@GetMapping("/{name}")
+	@GetMapping(value = "/{name}")
 	public ResponseEntity<BeerDTO> findByName(@PathVariable String name) {
 		return ResponseEntity.ok().body(service.findByName(name));
 	}
@@ -45,18 +45,18 @@ public class BeerController {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<BeerDTO> deleteById(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PatchMapping("{id}/increment")
+	@PatchMapping(value = "{id}/increment")
 	public ResponseEntity<BeerDTO> increment(@PathVariable Long id, @RequestBody @Valid QuantityDTO quantity) {
 		return ResponseEntity.ok().body(service.increment(id, quantity.getQuantity()));
 	}
 	
-	@PatchMapping("{id}/decrement")
+	@PatchMapping(value = "{id}/decrement")
 	public ResponseEntity<BeerDTO> decrement(@PathVariable Long id, @RequestBody @Valid QuantityDTO quantity) {
 		return ResponseEntity.ok().body(service.decrement(id, quantity.getQuantity()));
 	}
