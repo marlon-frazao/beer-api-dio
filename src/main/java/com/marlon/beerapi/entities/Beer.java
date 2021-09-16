@@ -2,8 +2,6 @@ package com.marlon.beerapi.entities;
 
 import java.io.Serializable;
 
-import com.marlon.beerapi.enums.BeerType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.marlon.beerapi.dto.BeerDTO;
+import com.marlon.beerapi.enums.BeerType;
 
 @Entity
 public class Beer implements Serializable {
@@ -27,6 +28,9 @@ public class Beer implements Serializable {
 	private String brand;
 	
 	@Column(nullable = false)
+    private int max;
+	
+	@Column(nullable = false)
 	private int quantity;
 	
 	@Enumerated(EnumType.STRING)
@@ -35,12 +39,22 @@ public class Beer implements Serializable {
 	
 	public Beer() {}
 
-	public Beer(Long id, String name, String brand, int quantity, BeerType type) {
+	public Beer(Long id, String name, String brand, int max, int quantity, BeerType type) {
 		this.id = id;
 		this.name = name;
 		this.brand = brand;
+		this.max = max;
 		this.quantity = quantity;
 		this.type = type;
+	}
+	
+	public Beer(BeerDTO dto) {
+		id = dto.getId();
+		name = dto.getName();
+		brand = dto.getBrand();
+		max = dto.getMax();
+		quantity = dto.getQuantity();
+		type = dto.getType();
 	}
 
 	public Long getId() {
@@ -65,6 +79,14 @@ public class Beer implements Serializable {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
 	}
 
 	public int getQuantity() {
@@ -106,5 +128,9 @@ public class Beer implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public BeerDTO toDTO() {
+		return new BeerDTO(this);
 	}
 }
